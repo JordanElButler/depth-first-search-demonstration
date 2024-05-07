@@ -1,0 +1,43 @@
+:root {
+  
+}
+
+* {
+  scroll-behavior: smooth;
+
+}
+html {
+  height: 100%;
+  width: 100%;
+}
+
+#btn {
+}
+#display-container {
+  display: flex;
+  flex-direction: column;
+  box-sizing: content-area;
+  border: solid black 1px;
+}
+
+.square {
+  box-sizing: border-content;
+  background-color: gray;
+  width: 20px;
+  height: 20px;
+  border: solid black 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.square.gray {
+  background-color: gray;
+}
+.square.red {
+  background-color: red;
+}
+.row-container {
+  display: flex;
+  flex-direction: row;
+  background-color: green;
+}
