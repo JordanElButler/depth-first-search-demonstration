@@ -1,131 +1,66 @@
-
-function deepArrayCopy ( arr: any ): any[] | any {
-	if ( arr instanceof Array ) {
-		return arr.map( a => deepArrayCopy( a ) );
-	} else return arr;
-}
-const randomArray = ( n: number ): number[] => {
-	const arr: number[] = [];
-	for ( let i = 0; i < n; i++ ) arr.push( i );
-	for ( let i = 0; i < n; i++ ) {
-	  const j = Math.floor( Math.random() * ( n - i ) ) + i;
-	  const tmp = arr[ j ];
-	  arr[ j ] = arr[ i ];
-	  arr[ i ] = tmp;
-	}
-	return arr;
-  }
-  
+import {CSP, CSPOptions } from './CSP';
+import { createCSP } from './CSP';
+import { deepCopy } from './utils';
 export type SudokuBoard = number[][];
+export type SudokuChoice = number;
+export const SudokuEmpty: SudokuChoice = -1;
+export const sudokuChoices = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+	
+const findEmptySpot = (board: SudokuBoard): [number, number] | null => {
+	for (let i = 0; i < 9; i++) {
+		for (let j = 0; j < 9; j++) {
+			if (board[i][j] === SudokuEmpty) return [i,j];
+		}
+	}
+	return null;
+}
+const getSudokuChoices = (board: SudokuBoard): SudokuChoice[] => {
+	return sudokuChoices;
+}
+const sudokuCompose = (board: SudokuBoard, sudokuChoice: SudokuChoice): SudokuBoard => {
+	const [i, j] = findEmptySpot(board)!;
+	board[i][j] = sudokuChoice;
+	return board;
+}
+const sudokuConstraintSatisfaction = (board: SudokuBoard, choice: SudokuChoice): boolean => {
+	const emptySpot = findEmptySpot(board);
+	if (!emptySpot) return false;
+	const [y, x] = emptySpot;
+	for ( let i = 0; i < 9; i++ ) {
+		if ( board[ y ][ i ] === choice ) return false;
+	}
+	// check column
+	for ( let i = 0; i < 9; i++ ) {
+		if ( board[ i ][ x ] === choice ) return false;
+	}
+	// check block
+	const bh = Math.floor( x / 3 );
+	const bv = Math.floor( y / 3 );
+	for ( let i = 0; i < 3; i++ ) {
+		for ( let j = 0; j < 3; j++ ) {
+			const cx = j + bh * 3;
+			const cy = i + bv * 3;
+			if ( board[ cy ][ cx ] === choice ) return false;
+		}
+	}
+	return true;
+}
+const sudokuDone = (board: SudokuBoard): boolean => {
+	return !findEmptySpot(board);
+}
 
 export function sudokuSolver( sudokuBoard: SudokuBoard ) {
 
-	let steps = 0;
-	// construct sudokuState
-	const initialBoard: SudokuBoard = [];
-	for ( let i = 0; i < 9; i++ ) {
-		const tmp = [];
-		for ( let j = 0; j < 9; j++ ) {
-			if ( sudokuBoard[ i ][ j ] !== -1 ) {
-				tmp.push( sudokuBoard[ i ][ j ] );
-			} else tmp.push( -1 );
-		}
-		initialBoard.push( tmp );
-	}
-	
-	const stack = [
-		{ board: initialBoard, ti: 1 }
-	]
-
-	function step (  ) {
-		if (done()) return;
-		console.log(stack.length);
-		steps += 1;
-		const { board, ti } = stack.pop()!;
-
-		// find empty
-		let emptySpot = null;
-		let found = false;
-		for ( let i = 0; i < 9 && !found; i++ ) {
-			for ( let j = 0; j < 9 && !found; j++ ) {
-				if ( board[ i ][ j ] === -1 ) {
-					emptySpot = [ i, j ];
-					found = true;
-				}
-			}
-		}
-		for ( let tt = ti; tt <= 9; tt++ ) {
-			const [ y, x ] = emptySpot!;
-			let falseFlag = false;
-			// check row
-			for ( let i = 0; i < 9 && !falseFlag; i++ ) {
-				if ( board[ y ][ i ] === tt ) {
-					falseFlag = true;
-				}
-			}
-			// check column
-			for ( let i = 0; i < 9 && !falseFlag; i++ ) {
-				if ( board[ i ][ x ] === tt ) {
-					falseFlag = true;
-				}
-			}
-			// check block
-			const bh = Math.floor( x / 3 );
-			const bv = Math.floor( y / 3 );
-			for ( let i = 0; i < 3 && !falseFlag; i++ ) {
-				for ( let j = 0; j < 3; j++ ) {
-					const cx = j + bh * 3;
-					const cy = i + bv * 3;
-					if ( board[ cy ][ cx ] === tt ) {
-						falseFlag = true;
-					}
-				}
-			}
-			if ( falseFlag ) continue;
-			// if all good
-			const newBoard = deepArrayCopy( board );
-			newBoard[ y ][ x ] = tt;
-			stack.push( {
-				board,
-				ti: tt + 1,
-			} );
-			stack.push( {
-				board: newBoard,
-				ti: 1,
-			} );
-			return;
-		}
-	}
-
-	function done (  ) {
-		const { board, ti } = stack[ stack.length - 1 ];
-		for ( let i = 0; i < 9; i++ ) {
-			for ( let j = 0; j < 9; j++ ) {
-				if ( board[ i ][ j ] === -1 ) return false;
-			}
-		}
-		return true;
-	}
-
-	function failed ( ) {
-		return stack.length === 0;
-	}
-	
-	function getSudokuBoard(): SudokuBoard {
-		if (stack.length === 0) return initialBoard;
-		return stack[stack.length - 1].board;
-	}
-	function getSteps(): number {
-		return steps;
-	}
-	return {
-		initialBoard,
-		step,
-		done,
-		failed,
-		getSudokuBoard,
-		getSteps,
-	}
+	const options = {randomized: false} as CSPOptions;
+	const csp = createCSP(
+		sudokuBoard, 
+		getSudokuChoices, 
+		sudokuCompose, 
+		sudokuConstraintSatisfaction, 
+		sudokuDone, 
+		options
+	);
+	return csp;
 }
 
 const boardTemplate = [
@@ -139,7 +74,7 @@ const boardTemplate = [
 	[ -1, -1, -1, -1, -1, -1, -1, -1, -1 ],
 	[ -1, -1, -1, -1, -1, -1, -1, -1, -1 ],
 ]
-export const initialBoard = deepArrayCopy( boardTemplate );
+export const initialBoard = deepCopy( boardTemplate );
 initialBoard[ 1 ][ 1 ] = 1;
 initialBoard[ 1 ][ 3 ] = 8;
 initialBoard[ 1 ][ 5 ] = 9;
@@ -228,11 +163,3 @@ function randomSudokuBoard ( density: number = 0.1 ): SudokuBoard {
 	}
 	return block
 }
-let ss = sudokuSolver( initialBoard );
-
-/*
-next step make the sudoku board editable, 
-change colors,
-change font to something better,
-clean up api
-*/

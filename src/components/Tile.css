@@ -1,0 +1,20 @@
+.tile-container {
+	margin: 0;
+	padding: 0;
+	display: grid;
+	gap: 0;
+	column-gap: 0;
+	row-gap: 0;
+	box-sizing: content-box;
+	user-select: none;
+}
+.tile {
+	box-sizing: border-box;
+	background-color: rgb(225, 223, 223);
+	width: 20px;
+	height: 20px;
+	border: solid black 1px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+  }

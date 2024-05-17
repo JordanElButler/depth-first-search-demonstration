@@ -1,13 +1,14 @@
 
 .sudoku-container {
-	box-sizing: border-box;
+	box-sizing: content-box;
 	margin: 0;
 	padding: 0;
-	width: 450px;
-	height: 450px;
 	display: grid;
+	width: 100%;
+	aspect-ratio: 1 / 1;
 	grid-template-rows: repeat(3, 1fr);
 	grid-template-columns: repeat(3, 1fr);
+	user-select: none;
   }
   
   .sudoku-block:nth-child(even) {
@@ -22,8 +23,8 @@
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	width: 150px;
-	height: 150px;
+	width: 100%;
+	aspect-ratio: 1 / 1;
 	display: grid;
 	grid-template-rows: repeat(3, 1fr);
 	grid-template-columns: repeat(3, 1fr);
@@ -36,8 +37,8 @@
 	background-color: inherit;
 	font-size: 30px;
 	box-sizing: border-area;
-	width: 50px;
-	height: 50px;
+	width: 100%;
+	aspect-ratio: 1 / 1;
 	display: flex;
 	justify-content: center;
 	align-items: center; 

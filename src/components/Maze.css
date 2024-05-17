@@ -1,0 +1,39 @@
+.maze-container {
+	margin: 0;
+	padding: 0;
+	display: grid;
+	gap: 0;
+	column-gap: 0;
+	row-gap: 0;
+	box-sizing: content-box;
+}
+
+.maze-cell {
+	box-sizing: border-box;
+	background-color: rgb(225, 223, 223);
+	width: 20px;
+	height: 20px;
+	border: solid black 1px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.cell-wall {
+	background-color: gray;
+}
+.cell-empty {
+	background-color: white;
+}
+.cell-entrance {
+	background-color: green;
+}
+.cell-exit {
+	background-color: red;
+}
+.cell-body {
+	background-color: aqua;
+}
+.cell-head {
+	background-color: blue;
+}

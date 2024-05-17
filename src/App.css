@@ -1,43 +1,70 @@
-:root {
-  
-}
 
-* {
-  scroll-behavior: smooth;
-
-}
-html {
+html, body {	
   height: 100%;
   width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Briem Hand", cursive;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
 }
 
-#btn {
-}
-#display-container {
-  display: flex;
-  flex-direction: column;
-  box-sizing: content-area;
-  border: solid black 1px;
+#root {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	box-sizing: content-box;
+	
 }
 
-.square {
-  box-sizing: border-content;
-  background-color: gray;
-  width: 20px;
-  height: 20px;
-  border: solid black 1px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.app-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 95%;
+	margin: 5px;
 }
-.square.gray {
-  background-color: gray;
+
+.component {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	max-width: 500px;
+	opacity: 0;
+	animation: fadeIn 0.25s ease-in-out forwards;
 }
-.square.red {
-  background-color: red;
+.component.drift-away {
+	opacity: 1;
+	animation: fadeOut 0.25s ease-in-out forwards;
 }
-.row-container {
-  display: flex;
-  flex-direction: row;
-  background-color: green;
-}
+
+@keyframes fadeIn {
+	from {
+	  opacity: 0;
+	  transform: translateX(100%);
+	}
+	to {
+	  opacity: 1;
+	  transform: translateX(0);
+	}
+  }
+  @keyframes fadeOut {
+	from {
+	  opacity: 1;
+	  transform: translateX(0);
+	}
+	to {
+	  opacity: 0;
+	  transform: translateX(-100%);
+	}
+  }
+  
+  .btn {
+	margin-top: 10px;
+	background-color: white;
+	border-radius: 5px;
+  }
