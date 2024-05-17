@@ -16,20 +16,20 @@ export const sequence = (n: number) => {
 	return arr;
 }
 
-export function deepCopy<T> ( value: T ): T {
-	if ( value === null || typeof value !== 'object' || 'function' === typeof value ) {
-		return value;
+export function deepCopy ( obj: any ): any {
+	if ( obj === null || typeof obj !== 'object' ) {
+		return obj;
 	}
 
-	if ( Array.isArray( value ) ) {
-		return ( value as any ).map( deepCopy ) as T; // Cast to any for array methods
+	const clonedObj: any = Array.isArray( obj ) ? [] : {};
+
+	for ( let key in obj ) {
+		if ( obj.hasOwnProperty( key ) ) {
+			clonedObj[ key ] = deepCopy( obj[ key ] );
+		}
 	}
 
-	const copy: any = {};
-	for ( const key of Object.keys( value ) ) {
-		copy[ key ] = deepCopy( value[ key ] );
-	}
-	return copy as T;
+	return clonedObj;
 }
 
 export function randomColor(): string {

@@ -24,7 +24,7 @@ function Tile ( { x, y, text, col }: TileProps ) {
 	)
 }
 export type TileViewProps = {	
-	refTarget: React.MutableRefObject<HTMLElement | undefined>
+	refTarget: React.RefObject<HTMLDivElement>
 }
 function TileView ({refTarget}: TileViewProps) {
 	const [ tileCSP, setTileCSP ] = React.useState( tileSolver( initialBoard ) );

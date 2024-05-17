@@ -6,7 +6,7 @@ import './App.css';
 function App() {
 	const components = [TileView, SudokuView];
 	const [compIndex, setCompIndex] = React.useState(0);
-	const myRef = React.useRef<HTMLElement>();
+	const myRef = React.useRef<HTMLDivElement>(null);
 	const [btnEnabled, setBtnEnabled] = React.useState(true);
 	function onClick() {
 		

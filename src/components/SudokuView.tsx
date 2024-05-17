@@ -38,7 +38,7 @@ function SudokuCell ( { val, x, y }: CellProps ) {
 	)
 }
 export type SudokuViewProps = {
-	refTarget: React.MutableRefObject<HTMLElement | undefined>
+	refTarget:  React.RefObject<HTMLDivElement>
 }
 function SudokuView ( { refTarget }: SudokuViewProps ) {
 
