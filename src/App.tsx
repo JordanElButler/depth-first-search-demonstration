@@ -23,7 +23,7 @@ function App() {
 	
 	return (
 		<div className={'app-container'}>
-			<button className={'btn'} disabled={!btnEnabled} onClick={onClick}>{'next app'}</button>
+			<button className={'m-btn'} disabled={!btnEnabled} onClick={onClick}>{'next app'}</button>
 			{compIndex === 0 && <TileView refTarget={myRef} />}
 			{compIndex === 1 && <SudokuView refTarget={myRef} />}
 		</div>

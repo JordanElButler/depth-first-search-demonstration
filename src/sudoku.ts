@@ -51,7 +51,7 @@ const sudokuDone = (board: SudokuBoard): boolean => {
 
 export function sudokuSolver( sudokuBoard: SudokuBoard ) {
 
-	const options = {randomized: false} as CSPOptions;
+	const options = {randomized: true} as CSPOptions;
 	const csp = createCSP(
 		sudokuBoard, 
 		getSudokuChoices, 
