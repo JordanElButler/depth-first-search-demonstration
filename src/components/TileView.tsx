@@ -1,9 +1,9 @@
 import React from 'react';
-import { tileSolver, initialBoard, TileEmpty, getTileColor } from '../tiles';
-import {randomColor} from '../utils';
+import { tileSolver, initialBoard, TileEmpty } from '../tiles';
+import { randomColor } from '../utils';
 import CSPControls from './CSPControls';
-import './Tile.css';
-import '../App.css';
+import styles from './Tile.module.css';
+import appStyles from '../App.module.css';
 
 type TileProps = {
 	x: number,
@@ -11,56 +11,60 @@ type TileProps = {
 	text: string,
 	col: string,
 }
-function Tile ( { x, y, text, col }: TileProps ) {
+
+function Tile({ x, y, text, col }: TileProps) {
 	const style = {
-		gridRow: `${ y + 1 }`,
-		gridColumn: `${ x + 1 }`,
+		gridRow: `${y + 1}`,
+		gridColumn: `${x + 1}`,
 		backgroundColor: col,
 	}
 	return (
-		<div style={ style } className={ 'tile' }>
-			{ text }
+		<div style={style} className={styles.tile}>
+			{text}
 		</div>
 	)
 }
+
 export type TileViewProps = {	
 	refTarget: React.RefObject<HTMLDivElement>
 }
-function TileView ({refTarget}: TileViewProps) {
-	const [ tileCSP, setTileCSP ] = React.useState( tileSolver( initialBoard ) );
-	const [ run, setRun ] = React.useState( true );
+
+function TileView({refTarget}: TileViewProps) {
+	const [tileCSP, setTileCSP] = React.useState(tileSolver(initialBoard));
+	const [run, setRun] = React.useState(true);
 	const [time, setTime] = React.useState(1000/2);
 	const [colors, setColors] = React.useState(new Array(200).fill(-1).map(_ => randomColor()));
 	
 	const fail = tileCSP.fail();
 	const done = tileCSP.done();
-	React.useEffect( () => {
-		const intervalId = setInterval( () => {
+
+	React.useEffect(() => {
+		const intervalId = setInterval(() => {
 			if (!run || fail || done) return;
 			tileCSP.step();
-			setTileCSP( {
+			setTileCSP({
 				...tileCSP
-			} );
-		}, time );
+			});
+		}, time);
 		return () => clearInterval(intervalId);
-	}, [run, time, fail, done] );
+	}, [run, time, fail, done]);
 
 	const { w, h, board } = tileCSP.getState();
-	const grayColor = 'rgb(128, 128, 128)';
 	const style = {
-		gridTemplateRows: `repeat(${ h }, 1fr)`,
-		gridTemplateColumns: `repeate(${ w }, 1fr)`,
+		gridTemplateRows: `repeat(${h}, 1fr)`,
+		gridTemplateColumns: `repeat(${w}, 1fr)`,
 		width: `${20*w}px`,
 		height: `${20*h}px`,
 	}
+
 	const tiles = [];
-	for ( let i = 0; i < h; i++ ) {
-		for ( let j = 0; j < w; j++ ) {
-			const val = board[ i ][ j ]
-			const text = val.index === TileEmpty ? '' : board[ i ][ j ].index.toString();
+	for (let i = 0; i < h; i++) {
+		for (let j = 0; j < w; j++) {
+			const val = board[i][j]
+			const text = ''// val.index === TileEmpty ? '' : board[i][j].index.toString();
 			const col = val.index !== TileEmpty ? colors[val.index] : '';
 			tiles.push(
-				<Tile key={ `${ j }-${ i }` } x={ j } y={ i } text={ text } col={col} />
+				<Tile key={`${j}-${i}`} x={j} y={i} text={text} col={col} />
 			)
 		}
 	}
@@ -74,12 +78,13 @@ function TileView ({refTarget}: TileViewProps) {
 	} else {
 		message = `steps ${steps}`;
 	}
+
 	return (
-		<div ref={refTarget} className={'component'}>
-			<div>{`${message}`}</div>
+		<div ref={refTarget} className={appStyles.component}>
+			<div>{message}</div>
 			<CSPControls failOrDone={fail || done} playState={run} setPlayState={setRun} time={time} setTime={setTime} />
-			<div style={ style } className={ 'tile-container' }>
-				{ tiles }
+			<div style={style} className={styles.tileContainer}>
+				{tiles}
 			</div>
 		</div>
 	)

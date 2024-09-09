@@ -1,5 +1,5 @@
 import React from 'react';
-import './CSPControls.css';
+import styles from './CSPControls.module.css';
 
 type TimerIntervals = {
 	intervals: number[],
@@ -77,10 +77,10 @@ function CSPControls({failOrDone, playState, setPlayState, time, setTime}: CSPCo
 		setPlayState(!playState);	
 	}
 	return (
-		<div className={'csp-controls-container'}>
-			<button onClick={slower} disabled={timerInt.top() || failOrDone} className={'csp-controls-btn'}>{'<<'}</button>
-			<button onClick={togglePlay} disabled={failOrDone || failOrDone} className={'csp-controls-btn'}>{playState ? '||' : '>'}</button>
-			<button onClick={faster} disabled={timerInt.bottom() || failOrDone} className={'csp-controls-btn'}>{'>>'}</button>
+		<div className={styles.cspControlsContainer}>
+			<button onClick={slower} disabled={timerInt.top() || failOrDone} className={styles.cspControlsBtn}>{'<<'}</button>
+			<button onClick={togglePlay} disabled={failOrDone} className={styles.cspControlsBtn}>{playState ? '||' : '>'}</button>
+			<button onClick={faster} disabled={timerInt.bottom() || failOrDone} className={styles.cspControlsBtn}>{'>>'}</button>
 		</div>
 	)
 }

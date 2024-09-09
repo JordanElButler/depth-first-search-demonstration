@@ -1,8 +1,8 @@
 import React from 'react';
 import { sudokuSolver, initialBoard, SudokuEmpty } from '../sudoku';
 import CSPControls from './CSPControls';
-import './Sudoku.css';
-import '../App.css';
+import styles from './Sudoku.module.css';
+import appStyles from '../App.module.css';
 
 type BlockProps = {
 	x: number,
@@ -16,7 +16,7 @@ function SudokuBlock ( { x, y, children }: BlockProps ) {
 	}
 
 	return (
-		<div style={ style } className={ 'sudoku-block' }>
+		<div style={ style } className={ styles.sudokuBlock }>
 			{ children }
 		</div>
 	)
@@ -32,7 +32,7 @@ function SudokuCell ( { val, x, y }: CellProps ) {
 		gridRow: y + 1,
 	}
 	return (
-		<div style={ style } className={ 'sudoku-cell' }>
+		<div style={ style } className={ styles.sudokuCell }>
 			{ val }
 		</div>
 	)
@@ -90,10 +90,10 @@ function SudokuView ( { refTarget }: SudokuViewProps ) {
 		message = `steps ${ steps }`;
 	}
 	return (
-		<div ref={ refTarget } className={ 'component' }>
+		<div ref={ refTarget } className={ appStyles.component }>
 			<div>{ message }</div>
 			<CSPControls failOrDone={ fail || done } playState={ run } setPlayState={ setRun } time={ time } setTime={ setTime } />
-			<div className={ 'sudoku-container' }>
+			<div className={ styles.sudokuContainer }>
 				{ blocks }
 			</div>
 		</div>

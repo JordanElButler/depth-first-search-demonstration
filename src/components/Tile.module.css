@@ -1,4 +1,4 @@
-.tile-container {
+.tileContainer {
 	margin: 0;
 	padding: 0;
 	display: grid;
@@ -8,6 +8,7 @@
 	box-sizing: content-box;
 	user-select: none;
 }
+
 .tile {
 	box-sizing: border-box;
 	background-color: rgb(225, 223, 223);
@@ -17,4 +18,4 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-  }
+}
